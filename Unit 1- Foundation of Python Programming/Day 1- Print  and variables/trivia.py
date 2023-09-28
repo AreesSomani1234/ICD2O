@@ -1,0 +1,8 @@
+print ("How many eyes do humans have")
+print()
+print ("A-1")
+print ("B-2")
+print ("C-3")
+print ("D-4")
+print ()
+print ("The Correct answer is B")
