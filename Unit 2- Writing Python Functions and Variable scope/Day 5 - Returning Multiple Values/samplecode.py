@@ -10,8 +10,8 @@ def sample_function():
 
 a, b, c = sample_function()
 
-print(a)
-print(c)
+print(a)  #7
+print(c)   #9
 print(sample_function())   #(7,8 9)
 
 d = sample_function() # returns (7, 8, 9)
