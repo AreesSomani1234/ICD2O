@@ -6,4 +6,4 @@ def squirrel_play(temp, is_summer):
         
    
 
-print(squirrel_play(91, False))
+print(squirrel_play(1000, True))

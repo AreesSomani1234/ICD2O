@@ -8,4 +8,4 @@ def in1020(a, b):
     return False
 
 
-print(in1020(100, 182))
+print(in1020(15, 182))
