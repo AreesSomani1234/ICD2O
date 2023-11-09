@@ -13,4 +13,4 @@ def caught_speeding(speed, is_birthday):
 
 print(caught_speeding(73, True))
 print(caught_speeding(83, True))
-print(caught_speeding(93, False))
+print(caught_speeding(60, False))
