@@ -27,7 +27,9 @@ def game_intro(player_superhero):
     print(f"Greetings, you are the legendary {player_superhero}!")
     print("The Evil Villan Bernard has 5 hostages on the top of the CN tower ")
     print("It is your job to stop him or he will eat the hostages. Good Luck!")
+    print("You win by killing Bernard and living. you start at 30-50 health and bernard starts at 50-75 health")
     print("Note: Every eaten hostage will make you lose health in the end")
+
 
 def make_decision():
     print("You now enter the CN tower you have 3 options")
