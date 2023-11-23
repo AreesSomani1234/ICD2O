@@ -1,5 +1,7 @@
 import random
 
+
+#Choose Superhero
 def choose_superhero():
     print("Choose your superhero: ")
     print("1. Tyreek The Turtle")
@@ -7,7 +9,7 @@ def choose_superhero():
     print("3. Math Man")
     superhero = input("Enter number of your chosen superhero: ")
 
-    while superhero not in ['1','2','3']:
+    while superhero not in ['1','2','3']:  #if you pick a number not 1 2 or 3
         print("Invalid number")
         print("Choose your superhero: ")
         print("1. Tyreek The Turtle")
@@ -22,7 +24,7 @@ def choose_superhero():
     else:
         return 'Math Man'
     
-def game_intro(player_superhero):
+def game_intro(player_superhero):      #Game Intro
     print()
     print(f"Greetings, you are the legendary {player_superhero}!")
     print("The Evil Villan Bernard has 5 hostages on the top of the CN tower ")
@@ -31,7 +33,7 @@ def game_intro(player_superhero):
     print("Note: Every eaten hostage will make you lose health in the end")
 
 
-def make_decision():
+def make_decision():       #The main decsision for the game
     print("You now enter the CN tower you have 3 options")
     print("1. Take the Stairs")
     print("2. Take the elevator")
@@ -44,8 +46,8 @@ def make_decision():
 
     return decision
 
-def superhero_mission(action, player_superhero):   
-    bernard_hp = random.randint(50,75)
+def superhero_mission(action, player_superhero):    #mission for the super hero
+    bernard_hp = random.randint(50,75)    #gernerates random health for you and Villan
     your_health = random.randint(30, 50)
     hostage_count = 5
     if action == '1':
@@ -74,7 +76,7 @@ def superhero_mission(action, player_superhero):
     
     return your_health, bernard_hp, hostage_count
 
-def bonus_points(your_health, hostage_count):
+def bonus_points(your_health, hostage_count):  #Awards or removes health based on how many hostages are alive
     if hostage_count == 5:
         your_health = your_health + 10
 
@@ -84,7 +86,7 @@ def bonus_points(your_health, hostage_count):
     else:
         your_health = your_health - 10
 
-def health_management(your_health, bernard_hp):
+def health_management(your_health, bernard_hp):  # Lets you know if you win or lose
     if your_health <= 0 and bernard_hp > 0:
         print(f'Your final health is {your_health} and Bernards final health is {bernard_hp}. You lose, because Bernard is still alive and your dead.')
     
@@ -97,6 +99,7 @@ def health_management(your_health, bernard_hp):
         print(f'Your final health is {your_health} and Bernards final health is {bernard_hp}. You Win because you killed Bernard!')
          
 
+#running the code
 hero = choose_superhero()
 print()
 game_intro(hero)
