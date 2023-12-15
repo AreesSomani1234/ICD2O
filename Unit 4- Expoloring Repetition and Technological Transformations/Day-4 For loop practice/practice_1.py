@@ -44,11 +44,11 @@
 
 #10
 
-# for n in range(1,8):
-#     product=1
-#     for i in range(n,0,-1):
-#         product=product*i
-#     print(product)
+for n in range(1,8):
+    product=1
+    for i in range(n,0,-1):
+        product=product*i
+    print(product)
 
 # #11
 # str = "WONDERFUL"
@@ -68,16 +68,16 @@
 
 #14
 
-backwards=""
-forwards="RACECAR"
-for i in range(len(forwards)-1,-1,-1):
-    backwards = backwards + forwards[i]
+# backwards=""
+# forwards="RACECAR"
+# for i in range(len(forwards)-1,-1,-1):
+#     backwards = backwards + forwards[i]
 
-if backwards == forwards:
-    print("yes")
+# if backwards == forwards:
+#     print("yes")
 
-else:
-    print("no")
+# else:
+#     print("no")
 
 
 
