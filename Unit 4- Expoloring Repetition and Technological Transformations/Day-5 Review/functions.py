@@ -51,19 +51,5 @@
 # print(repeat_characters("hello", 3))
 
 
-#5
-# def title_case(s):
-#     result = ""
-#     for i in range(0,len(s)):
-#         cap_first_letter = s[0].upper()
-#         result = cap_first_letter + s[1:len(s)]
-
-#     return result
-
-# print(title_case("hello"))
-
-        
-
-
 
 

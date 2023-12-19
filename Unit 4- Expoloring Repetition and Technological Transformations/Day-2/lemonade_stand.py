@@ -145,7 +145,7 @@ def display_balance_sheet(day, num_customers, price, num_signs, old_wallet, wall
 
 def get_play_again():
      UI = input("Type in 'y' if you would like to play again or 'n' if you'd like to stop playing: ")
-     while UI != "y" or UI != "n":
+     while UI not in ('y', 'n'):
           print("Invalid Answer!")
           UI = input("Type in 'y' if you would like to play again or 'n' if you'd like to stop playing: ")
      if UI == "y":
@@ -163,7 +163,7 @@ def sim_day(wallet, day):
      print(f"Today's weather forecast is {weather}. The humidity is {humidity1}.")
      num_signs, price, wallet = customer_input(wallet)
      num_customers = advertising_signs(num_customers, weather, humidity1, num_signs)
-     num_customers = update_customers_by_price(num_customers, price)
+     num_customers = update_customers_by_price(num_customers, price, weather, humidity1)
      wallet += num_customers * price
      display_balance_sheet(day, num_customers, price, num_signs, old_wallet, wallet)
      if wallet > 0:
@@ -179,4 +179,5 @@ wallet, play_again = sim_day(wallet, day)
 while(play_again):
      day += 1
      wallet, play_again = sim_day(wallet, day)
+
 
