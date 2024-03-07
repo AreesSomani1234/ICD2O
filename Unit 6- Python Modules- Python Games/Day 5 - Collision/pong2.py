@@ -116,6 +116,7 @@ while running:
         text = font.render(f"Game Over", True, BLACK)
         center_text = (SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2)
         screen.blit(text, (center_text))
+        
         break
         
     
