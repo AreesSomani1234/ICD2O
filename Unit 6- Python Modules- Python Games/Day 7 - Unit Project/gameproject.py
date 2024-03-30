@@ -12,6 +12,7 @@ pygame.init()
 pygame.mixer.init()
 fire = pygame.mixer.Sound('fire.wav')
 small_bang = pygame.mixer.Sound('bangSmall.wav')
+beep = pygame.mixer.Sound('beep (1).wav')
 
 #Colours
 BLACK = (0, 0, 0)
@@ -45,6 +46,14 @@ paddle_right_location_y = SCREEN_HEIGHT // 2
 paddle_radius = 20
 paddle_speed = 10
 
+#Ball sizes
+ball_x = SCREEN_WIDTH // 2
+ball_y = SCREEN_HEIGHT // 2
+ball_speed_x = 3
+ball_speed_y = 3
+ball_radius = 10
+
+
 #bullet
 bullet_length = 45
 bullet_width = 10
@@ -74,12 +83,31 @@ while running:
     pygame.draw.circle(screen, BLACK, (paddle_left_location_x, paddle_left_location_y), paddle_radius)
     pygame.draw.circle(screen, RED, (paddle_right_location_x, paddle_right_location_y), paddle_radius)
 
-    #Recatangle around paddles
+    #create ball
+    pygame.draw.circle(screen, BLACK, (ball_x, ball_y), ball_radius)
+
+    #Recatangle around paddles and ball
     paddle_left = pygame.Rect(paddle_left_location_x - paddle_radius, paddle_left_location_y - paddle_radius, 2*paddle_radius, 2*paddle_radius)
     paddle_right = pygame.Rect(paddle_right_location_x - paddle_radius, paddle_right_location_y - paddle_radius, 2*paddle_radius, 2*paddle_radius)
+    ball = pygame.Rect(ball_x - ball_radius, ball_y - ball_radius, 2*ball_radius, 2*ball_radius)
 
+    #Ball in motion
+    ball_x += ball_speed_x
+    ball_y += ball_speed_y
 
-    #Movement
+    #Ball bouncing off walls
+    if ball_y <= 0 or ball_y >= SCREEN_HEIGHT:
+        ball_speed_y *= -1
+
+    if ball_x <= 0 or ball_x >= SCREEN_WIDTH:
+        ball_x = SCREEN_WIDTH // 2
+        ball_y = SCREEN_HEIGHT // 2
+
+    if (ball.colliderect(paddle_right) or ball.colliderect(paddle_left)):
+        ball_speed_x =- ball_speed_x
+        pygame.mixer.Sound.play(beep)
+
+    # Key Movement
     keys = pygame.key.get_pressed()
 
     #Left paddle movement
@@ -134,6 +162,3 @@ while running:
 
 pygame.quit()
 sys.exit()
-
-
-
