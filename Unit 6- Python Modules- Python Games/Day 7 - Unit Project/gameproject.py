@@ -10,7 +10,8 @@ pygame.init()
 
 #Pygame Sound
 pygame.mixer.init()
-
+fire = pygame.mixer.Sound('fire.wav')
+small_bang = pygame.mixer.Sound('bangSmall.wav')
 
 #Colours
 BLACK = (0, 0, 0)
@@ -31,8 +32,8 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Super Pong")
 
 #Beginning Score
-left_side_score = 0
-right_side_score = 0
+left_score = 0
+right_score = 0
 
 #Paddle Sizes
 paddle_left_location_x = 40
@@ -51,7 +52,7 @@ bullet_width = 10
 left_bullet = pygame.Rect(paddle_left_location_x + paddle_radius, paddle_left_location_y  , bullet_length, bullet_width)
 left_bullet_motion = False
 
-right_bullet = pygame.Rect(paddle_right_location_x + paddle_radius, paddle_right_location_y  , bullet_length, bullet_width)
+right_bullet = pygame.Rect(paddle_right_location_x - bullet_length + paddle_radius, paddle_right_location_y  , bullet_length,  bullet_width)
 right_bullet_motion = False
 
 bullet_speed = 5
@@ -70,7 +71,7 @@ while running:
     clock.tick(60)
 
     #Paddles
-    pygame.draw.circle(screen, RED, (paddle_left_location_x, paddle_left_location_y), paddle_radius)
+    pygame.draw.circle(screen, BLACK, (paddle_left_location_x, paddle_left_location_y), paddle_radius)
     pygame.draw.circle(screen, RED, (paddle_right_location_x, paddle_right_location_y), paddle_radius)
 
     #Recatangle around paddles
@@ -102,6 +103,7 @@ while running:
         left_bullet = pygame.Rect(paddle_left_location_x + paddle_radius, paddle_left_location_y , bullet_length, bullet_width)
         bullet_count_left += 1
         left_bullet_motion = True
+        pygame.mixer.Sound.play(fire)
 
     if left_bullet_motion:
         pygame.draw.rect(screen, BLACK, [left_bullet.x, left_bullet.y,left_bullet.w, left_bullet.h])
@@ -109,15 +111,19 @@ while running:
         if left_bullet.x >= SCREEN_WIDTH:
             left_bullet_motion = False
 
+
     #Right Shooting movement
     if (keys[pygame.K_LEFT]) and (right_bullet_motion == False) and (bullet_count_right <= 5):
-        right_bullet = pygame.Rect(paddle_right_location_x + paddle_radius, paddle_right_location_y  , bullet_length, bullet_width)
+        right_bullet = pygame.Rect(paddle_right_location_x - bullet_length + paddle_radius, paddle_right_location_y, bullet_length, bullet_width)
         bullet_count_right += 1
         right_bullet_motion = True
+        pygame.mixer.Sound.play(fire)
     
     if right_bullet_motion:
-        pygame.draw.rect(screen, BLACK, [right_bullet.x, right_bullet.y, right_bullet.w, right_bullet.h])
-        
+        pygame.draw.rect(screen, RED, [right_bullet.x, right_bullet.y, right_bullet.w, right_bullet.h])
+        right_bullet.x -= bullet_speed
+        if right_bullet.x <= 0:
+            right_bullet_motion = False
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
