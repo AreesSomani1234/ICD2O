@@ -53,6 +53,8 @@ ball_speed_x = 3
 ball_speed_y = 3
 ball_radius = 10
 
+#Font
+font = pygame.font.SysFont(None, 48)
 
 #bullet
 bullet_length = 45
@@ -104,7 +106,7 @@ while running:
         ball_y = SCREEN_HEIGHT // 2
 
     if (ball.colliderect(paddle_right) or ball.colliderect(paddle_left)):
-        ball_speed_x =- ball_speed_x
+        ball_speed_x =- ball_speed_x 
         pygame.mixer.Sound.play(beep)
 
     # Key Movement
@@ -152,6 +154,28 @@ while running:
         right_bullet.x -= bullet_speed
         if right_bullet.x <= 0:
             right_bullet_motion = False
+
+    
+    #Scoring
+    if ball_x >= SCREEN_WIDTH - ball_radius/4:
+        left_score += 1 
+    elif ball_x <= ball_radius/4:
+        right_score += 1 
+
+    #Scoring Display
+
+    text = font.render(f"{left_score} - {right_score}", True, BLACK)
+    center_text = (SCREEN_HEIGHT // 1.6, SCREEN_WIDTH // 20)
+    screen.blit(text, (center_text))
+
+    if (left_score == 10) or (right_score == 10):
+        text = font.render(f"Game Over", True, BLACK)
+        center_text = (SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2)
+        screen.blit(text, (center_text))
+        pygame.display.flip()
+        pygame.time.delay(5000)
+        running = False
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
