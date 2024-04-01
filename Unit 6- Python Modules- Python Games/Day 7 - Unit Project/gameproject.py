@@ -105,9 +105,15 @@ while running:
         ball_x = SCREEN_WIDTH // 2
         ball_y = SCREEN_HEIGHT // 2
 
-    if (ball.colliderect(paddle_right) or ball.colliderect(paddle_left)):
-        ball_speed_x =- ball_speed_x 
+
+    if math.sqrt((ball_x - paddle_left_location_x)**2 + (ball_y - paddle_left_location_y)**2) <= paddle_radius + ball_radius:
+        ball_speed_x *= -1
         pygame.mixer.Sound.play(beep)
+    
+    if math.sqrt((ball_x - paddle_right_location_x)**2 + (ball_y - paddle_right_location_y)**2) <= paddle_radius + ball_radius:
+        ball_speed_x *= -1
+        pygame.mixer.Sound.play(beep)
+
 
     # Key Movement
     keys = pygame.key.get_pressed()
@@ -186,3 +192,7 @@ while running:
 
 pygame.quit()
 sys.exit()
+
+
+
+
