@@ -13,6 +13,7 @@ pygame.mixer.init()
 fire = pygame.mixer.Sound('fire.wav')
 small_bang = pygame.mixer.Sound('bangSmall.wav')
 beep = pygame.mixer.Sound('beep (1).wav')
+bullet_hit = pygame.mixer.Sound('extraShip.wav')
 
 #Colours
 BLACK = (0, 0, 0)
@@ -105,7 +106,8 @@ while running:
         ball_x = SCREEN_WIDTH // 2
         ball_y = SCREEN_HEIGHT // 2
 
-
+    #Ball bouncing off paddles
+        
     if math.sqrt((ball_x - paddle_left_location_x)**2 + (ball_y - paddle_left_location_y)**2) <= paddle_radius + ball_radius:
         ball_speed_x *= -1
         pygame.mixer.Sound.play(beep)
@@ -161,10 +163,33 @@ while running:
         if right_bullet.x <= 0:
             right_bullet_motion = False
 
+
+    # Left Bullet colliding with paddles
+    if left_bullet.colliderect(paddle_right):
+        if 0 <= right_score <= 2:
+            left_score += 2
+        elif right_score >= 3:
+            right_score -= 3
+        
+        left_bullet = pygame.Rect(0,0,-100,100)
+        pygame.mixer.Sound.play(bullet_hit)
+    
+    #Right bullet colliding with paddles
+    if right_bullet.colliderect(paddle_left):
+        if 0 <= left_score <= 2:
+            right_score += 2
+        elif left_score >= 3:
+            left_score -= 3
+        
+        right_bullet = pygame.Rect(0,0,100,-100)
+        pygame.mixer.Sound.play(bullet_hit)
+
+
     
     #Scoring
     if ball_x >= SCREEN_WIDTH - ball_radius/4:
         left_score += 1 
+    
     elif ball_x <= ball_radius/4:
         right_score += 1 
 
