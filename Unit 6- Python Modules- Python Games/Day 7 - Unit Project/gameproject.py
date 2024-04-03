@@ -37,6 +37,12 @@ pygame.display.set_caption("Super Pong")
 left_score = 0
 right_score = 0
 
+#powerup sizes/location/stats
+powerup_size = random.randint(10,50)
+powerup_x = random.randint(200, SCREEN_WIDTH - 200)
+powerup_y = random.randint(0, SCREEN_HEIGHT - powerup_size)
+number_of_powerups_used = 0
+
 #Paddle Sizes
 paddle_left_location_x = 40
 paddle_left_location_y = SCREEN_HEIGHT // 2
@@ -57,7 +63,7 @@ ball_radius = 10
 #Font
 font = pygame.font.SysFont(None, 48)
 
-#bullet
+#bullet stats
 bullet_length = 45
 bullet_width = 10
 
@@ -87,7 +93,7 @@ while running:
     pygame.draw.circle(screen, RED, (paddle_right_location_x, paddle_right_location_y), paddle_radius)
 
     #create ball
-    pygame.draw.circle(screen, BLACK, (ball_x, ball_y), ball_radius)
+    pygame.draw.circle(screen, BLUE, (ball_x, ball_y), ball_radius)
 
     #Recatangle around paddles and ball
     paddle_left = pygame.Rect(paddle_left_location_x - paddle_radius, paddle_left_location_y - paddle_radius, 2*paddle_radius, 2*paddle_radius)
@@ -106,8 +112,7 @@ while running:
         ball_x = SCREEN_WIDTH // 2
         ball_y = SCREEN_HEIGHT // 2
 
-    #Ball bouncing off paddles
-        
+    #Ball bouncing off paddles  
     if math.sqrt((ball_x - paddle_left_location_x)**2 + (ball_y - paddle_left_location_y)**2) <= paddle_radius + ball_radius:
         ball_speed_x *= -1
         pygame.mixer.Sound.play(beep)
@@ -167,7 +172,7 @@ while running:
     # Left Bullet colliding with paddles
     if left_bullet.colliderect(paddle_right):
         if 0 <= right_score <= 2:
-            left_score += 2
+            left_score += 3
         elif right_score >= 3:
             right_score -= 3
         
@@ -177,7 +182,7 @@ while running:
     #Right bullet colliding with paddles
     if right_bullet.colliderect(paddle_left):
         if 0 <= left_score <= 2:
-            right_score += 2
+            right_score += 3
         elif left_score >= 3:
             left_score -= 3
         
@@ -185,7 +190,70 @@ while running:
         pygame.mixer.Sound.play(bullet_hit)
 
 
+    #Powerup creation
+    pygame.draw.rect(screen, GREEN, (powerup_x, powerup_y, powerup_size, powerup_size))
     
+    #Rectangle around powerup
+    powerup = pygame.Rect(powerup_x, powerup_y, powerup_size, powerup_size)
+
+    #left bullet collision with powerup
+    if left_bullet.colliderect(powerup):
+        left_random = random.randint(0,8)
+        
+        if left_random == 1:
+            left_score += 1
+        
+        elif left_random == 2:
+            right_score -= 1
+        
+        elif left_random == 3:
+            left_score += 2
+        
+        elif left_random == 4:
+            right_score -= 2
+        
+        elif left_random == 5:
+            ball_speed_x += 1
+            ball_speed_y += 1
+        
+        elif left_random == 6:
+            ball_radius -= 1
+        
+        elif left_random == 7:
+            ball_radius += 1
+        
+        elif left_random == 8:
+            left_score += 3
+
+    #left bullet collision with powerup
+    if right_bullet.colliderect(powerup):
+        right_random = random.randint(0,8)
+        
+        if right_random == 1:
+            right_score += 1
+        
+        elif right_random == 2:
+            left_score -= 1
+        
+        elif right_random == 3:
+            right_score += 2
+        
+        elif right_random == 4:
+            left_score -= 2
+        
+        elif right_random == 5:
+            ball_speed_x += 1
+            ball_speed_y += 1
+        
+        elif right_random == 6:
+            ball_radius -= 1
+        
+        elif right_random == 7:
+            ball_radius += 1
+        
+        elif right_random == 8:
+            right_score += 3
+
     #Scoring
     if ball_x >= SCREEN_WIDTH - ball_radius/4:
         left_score += 1 
