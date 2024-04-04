@@ -8,6 +8,9 @@ import math
 #Initialize Pygame
 pygame.init()
 
+#runs
+run = 0
+
 #Pygame Sound
 pygame.mixer.init()
 fire = pygame.mixer.Sound('fire.wav')
@@ -38,7 +41,7 @@ left_score = 0
 right_score = 0
 
 #powerup sizes/location/stats
-powerup_size = random.randint(10,50)
+powerup_size = random.randint(15,50)
 powerup_x = random.randint(200, SCREEN_WIDTH - 200)
 powerup_y = random.randint(0, SCREEN_HEIGHT - powerup_size)
 number_of_powerups_used = 0
@@ -87,7 +90,7 @@ while running:
     screen.fill(WHITE)
     #clock
     clock.tick(60)
-
+    run += 1
     #Paddles
     pygame.draw.circle(screen, BLACK, (paddle_left_location_x, paddle_left_location_y), paddle_radius)
     pygame.draw.circle(screen, RED, (paddle_right_location_x, paddle_right_location_y), paddle_radius)
@@ -191,15 +194,17 @@ while running:
 
 
     #Powerup creation
+
     pygame.draw.rect(screen, GREEN, (powerup_x, powerup_y, powerup_size, powerup_size))
     
     #Rectangle around powerup
     powerup = pygame.Rect(powerup_x, powerup_y, powerup_size, powerup_size)
 
     #left bullet collision with powerup
-    if left_bullet.colliderect(powerup):
+    if left_bullet.colliderect(powerup): #Length formula math.sqrt((x-x)^2 + (y-y)^2)
         left_random = random.randint(0,8)
-        
+        left_bullet = pygame.Rect(0,0,-1000,1000)
+
         if left_random == 1:
             left_score += 1
         
@@ -224,11 +229,17 @@ while running:
         
         elif left_random == 8:
             left_score += 3
-
-    #left bullet collision with powerup
-    if right_bullet.colliderect(powerup):
-        right_random = random.randint(0,8)
         
+
+        powerup_size = random.randint(15,50)
+        powerup_x = random.randint(200, SCREEN_WIDTH - 200)
+        powerup_y = random.randint(0, SCREEN_HEIGHT - powerup_size)
+
+    #Right bullet collision with powerup
+    if right_bullet.colliderect(powerup): #Length formula math.sqrt((x-x)^2 + (y-y)^2)
+        right_random = random.randint(0,8)
+        right_bullet = pygame.Rect(0,0,1000,-1000)
+
         if right_random == 1:
             right_score += 1
         
@@ -254,6 +265,12 @@ while running:
         elif right_random == 8:
             right_score += 3
 
+
+        powerup_size = random.randint(15,50)
+        powerup_x = random.randint(200, SCREEN_WIDTH - 200)
+        powerup_y = random.randint(0, SCREEN_HEIGHT - powerup_size)
+
+
     #Scoring
     if ball_x >= SCREEN_WIDTH - ball_radius/4:
         left_score += 1 
@@ -267,7 +284,7 @@ while running:
     center_text = (SCREEN_HEIGHT // 1.6, SCREEN_WIDTH // 20)
     screen.blit(text, (center_text))
 
-    if (left_score == 10) or (right_score == 10):
+    if (left_score >= 10) or (right_score >= 10):
         text = font.render(f"Game Over", True, BLACK)
         center_text = (SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2)
         screen.blit(text, (center_text))
