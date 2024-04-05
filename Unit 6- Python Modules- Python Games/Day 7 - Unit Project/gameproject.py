@@ -252,12 +252,44 @@ while running:
     pygame.draw.rect(screen, GRAY, (grey_wall_x , grey_wall_y, 25, 75))
 
     #Rectangle around grey wall
-    pygame.Rect(grey_wall_x , grey_wall_y, 25, 75)
+    grey_wall = pygame.Rect(grey_wall_x , grey_wall_y, 25, 75)
 
     #Grey Wall in motion
     grey_wall_y += grey_wall_velocity
     if grey_wall_y >= SCREEN_HEIGHT - 75 or grey_wall_y <= 0:
         grey_wall_velocity *= -1
+
+    #Grey Wall Collision with ball
+    if ball.colliderect(grey_wall):
+        ball_speed_x *= -1
+
+    #Left Bullet colliding with grey wall
+    if left_bullet.colliderect(grey_wall):
+        left_bullet = pygame.Rect(0,0,1000,-1000)
+        left_random_grey_wall = random.randint(0,3)
+
+        if left_random_grey_wall == 1:
+            left_score -= 1
+        
+        elif left_random_grey_wall == 2:
+            left_score -= 2
+        
+        elif left_random_grey_wall == 3:
+            left_score -= 3
+
+    #Right Bullet colliding with grey wall
+    if right_bullet.colliderect(grey_wall):
+        right_bullet = pygame.Rect(0,0,1000,-1000)
+        right_random_grey_wall = random.randint(0,3)
+
+        if right_random_grey_wall == 1:
+            right_score -= 1
+        
+        elif right_random_grey_wall == 2:
+            right_score -= 2
+        
+        elif right_random_grey_wall == 3:
+            left_score -= 3
 
 
     #Scoring
@@ -291,6 +323,8 @@ while running:
 
 pygame.quit()
 sys.exit()
+
+
 
 
 
