@@ -23,7 +23,7 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 BROWN = (139, 69, 19)
-GREY = (128, 128, 128)
+GRAY = (128, 128, 128)
 YELLOW = (255, 255, 0)
 
 #Screen Setup
@@ -38,11 +38,16 @@ pygame.display.set_caption("Super Pong")
 left_score = 0
 right_score = 0
 
-#powerup sizes/location/stats
-powerup_size = random.randint(25,50)
-powerup_x = random.randint(200, SCREEN_WIDTH - 200)
-powerup_y = random.randint(0, SCREEN_HEIGHT - powerup_size)
-number_of_powerups_used = 0
+# Yellow (score) powerup sizes/location/stats
+yellow_powerup_size = random.randint(25,50)
+yellow_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
+yellow_powerup_y = random.randint(0, SCREEN_HEIGHT - yellow_powerup_size)
+
+# Grey Wall
+grey_wall_x = ((SCREEN_WIDTH / 2) - 12.5)
+grey_wall_y = ((SCREEN_HEIGHT / 2) - 12.5)
+grey_wall_velocity = 3
+
 
 #Paddle Sizes
 paddle_left_location_x = 40
@@ -86,8 +91,10 @@ clock = pygame.time.Clock()
 running = True
 while running:
     screen.fill(WHITE)
+    
     #clock
     clock.tick(60)
+    
     #Paddles
     pygame.draw.circle(screen, BLACK, (paddle_left_location_x, paddle_left_location_y), paddle_radius)
     pygame.draw.circle(screen, RED, (paddle_right_location_x, paddle_right_location_y), paddle_radius)
@@ -142,7 +149,7 @@ while running:
         paddle_right_location_y = min(paddle_right_location_y, SCREEN_HEIGHT - paddle_radius) # player does not move past bottom edge
 
     #Left Shooting movement
-    if (keys[pygame.K_d]) and (left_bullet_motion == False) and (bullet_count_left <= 5):
+    if (keys[pygame.K_d]) and (left_bullet_motion == False) and (bullet_count_left <= 15):
         left_bullet = pygame.Rect(paddle_left_location_x + paddle_radius, paddle_left_location_y , bullet_length, bullet_width)
         bullet_count_left += 1
         left_bullet_motion = True
@@ -156,7 +163,7 @@ while running:
 
 
     #Right Shooting movement
-    if (keys[pygame.K_LEFT]) and (right_bullet_motion == False) and (bullet_count_right <= 5):
+    if (keys[pygame.K_LEFT]) and (right_bullet_motion == False) and (bullet_count_right <= 15):
         right_bullet = pygame.Rect(paddle_right_location_x - bullet_length + paddle_radius, paddle_right_location_y, bullet_length, bullet_width)
         bullet_count_right += 1
         right_bullet_motion = True
@@ -190,81 +197,67 @@ while running:
         pygame.mixer.Sound.play(bullet_hit)
 
 
-    #Powerup creation
-
-    pygame.draw.rect(screen, GREEN, (powerup_x, powerup_y, powerup_size, powerup_size))
+    # Yellow (score) Powerup creation
+    pygame.draw.rect(screen, GREEN, (yellow_powerup_x, yellow_powerup_y, yellow_powerup_size, yellow_powerup_size))
     
-    #Rectangle around powerup
-    powerup = pygame.Rect(powerup_x, powerup_y, powerup_size, powerup_size)
+    #Rectangle around yellow (score) powerup
+    yellow_powerup = pygame.Rect(yellow_powerup_x, yellow_powerup_y, yellow_powerup_size, yellow_powerup_size)
 
-    #left bullet collision with powerup
-    if left_bullet.colliderect(powerup): #Length formula math.sqrt((x-x)^2 + (y-y)^2)
-        left_random = random.randint(0,8)
+    #left bullet collision with yellow powerup
+    if left_bullet.colliderect(yellow_powerup): 
+        left_random_yellow_powerup = random.randint(0,4)
         left_bullet = pygame.Rect(0,0,1000,-1000)
 
-        if left_random == 1:
+        if left_random_yellow_powerup == 1:
             left_score += 1
         
-        elif left_random == 2:
+        elif left_random_yellow_powerup == 2:
             right_score -= 1
         
-        elif left_random == 3:
+        elif left_random_yellow_powerup == 3:
             left_score += 2
         
-        elif left_random == 4:
-            right_score -= 2
-        
-        elif left_random == 5:
-            bullet_speed += 1
-        
-        elif left_random == 6:
-            ball_radius -= 1
-        
-        elif left_random == 7:
-            ball_radius += 1
-        
-        elif left_random == 8:
+        elif left_random_yellow_powerup == 4:
             left_score += 3
         
 
-        powerup_size = random.randint(25,50)
-        powerup_x = random.randint(200, SCREEN_WIDTH - 200)
-        powerup_y = random.randint(0, SCREEN_HEIGHT - powerup_size)
+        yellow_powerup_size = random.randint(25,50)
+        yellow_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
+        yellow_powerup_y = random.randint(0, SCREEN_HEIGHT - yellow_powerup_size)
 
-    #Right bullet collision with powerup
-    if right_bullet.colliderect(powerup): #Length formula math.sqrt((x-x)^2 + (y-y)^2)
-        right_random = random.randint(0,8)
+    #Right bullet collision with yellow powerup
+    if right_bullet.colliderect(yellow_powerup): #Length formula math.sqrt((x-x)^2 + (y-y)^2)
+        right_random_yellow_powerup = random.randint(0,8)
         right_bullet = pygame.Rect(0,0,1000,-1000)
 
-        if right_random == 1:
+        if right_random_yellow_powerup == 1:
             right_score += 1
         
-        elif right_random == 2:
+        elif right_random_yellow_powerup == 2:
             left_score -= 1
         
-        elif right_random == 3:
+        elif right_random_yellow_powerup == 3:
             right_score += 2
-        
-        elif right_random == 4:
-            left_score -= 2
-        
-        elif right_random == 5:
-            ball_speed_x += 1
-            ball_speed_y += 1
-        
-        elif right_random == 6:
-            ball_radius -= 1
-        
-        elif right_random == 7:
-            ball_radius += 1
-        
-        elif right_random == 8:
+            
+        elif right_random_yellow_powerup == 4:
             right_score += 3
 
 
-        powerup_size = random.randint(25,50)
-        powerup_x = random.randint(200, SCREEN_WIDTH - 200)
-        powerup_y = random.randint(0, SCREEN_HEIGHT - powerup_size)
+        yellow_powerup_size = random.randint(25,50)
+        yellow_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
+        yellow_powerup_y = random.randint(0, SCREEN_HEIGHT - yellow_powerup_size)
+
+
+    #Grey Wall creation
+    pygame.draw.rect(screen, GRAY, (grey_wall_x , grey_wall_y, 25, 75))
+
+    #Rectangle around grey wall
+    pygame.Rect(grey_wall_x , grey_wall_y, 25, 75)
+
+    #Grey Wall in motion
+    grey_wall_y += grey_wall_velocity
+    if grey_wall_y >= SCREEN_HEIGHT - 75 or grey_wall_y <= 0:
+        grey_wall_velocity *= -1
 
 
     #Scoring
@@ -280,7 +273,7 @@ while running:
     center_text = (SCREEN_HEIGHT // 1.6, SCREEN_WIDTH // 20)
     screen.blit(text, (center_text))
 
-    if (left_score >= 100) or (right_score >= 100):
+    if (left_score >= 10) or (right_score >= 10):
         text = font.render(f"Game Over", True, BLACK)
         center_text = (SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2)
         screen.blit(text, (center_text))
