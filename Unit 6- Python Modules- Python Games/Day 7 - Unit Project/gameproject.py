@@ -308,7 +308,7 @@ while running:
 
     #Left bullet collision with Brown powerdown
     if left_bullet.colliderect(brown_powerdown): 
-        left_random_brown_powerdown = random.randint(0,2)
+        left_random_brown_powerdown = random.randint(0,3)
         left_bullet = pygame.Rect(0,0,10000,-10000000)
 
         if left_random_brown_powerdown == 1:
@@ -319,13 +319,17 @@ while running:
             ball_speed_x -= 1.2
             ball_speed_y -= 1.2
         
+        elif left_random_brown_powerdown == 3:
+            ball_speed_x = 3
+            ball_speed_y = 3
+
         brown_speed_powerup_size = random.randint(40,60)
         brown_speed_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
         brown_speed_powerup_y = random.randint(0, SCREEN_HEIGHT - brown_speed_powerup_size)
     
     #Right bullet collision with Brown powerdown
     if right_bullet.colliderect(brown_powerdown): 
-        right_random_brown_powerdown = random.randint(0,2)
+        right_random_brown_powerdown = random.randint(0,3)
         right_bullet = pygame.Rect(0,0,10000,-10000000)
 
         if right_random_brown_powerdown == 1:
@@ -335,7 +339,11 @@ while running:
         elif right_random_brown_powerdown == 2:
             ball_speed_x -= 1.2
             ball_speed_y -= 1.2
-        
+
+        elif right_random_brown_powerdown == 3:
+            ball_speed_x = 3
+            ball_speed_y = 3
+
         brown_speed_powerup_size = random.randint(40,60)
         brown_speed_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
         brown_speed_powerup_y = random.randint(0, SCREEN_HEIGHT - brown_speed_powerup_size)
