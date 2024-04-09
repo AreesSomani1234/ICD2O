@@ -12,7 +12,7 @@ pygame.init()
 #Pygame Sound
 pygame.mixer.init()
 fire = pygame.mixer.Sound('fire.wav')
-small_bang = pygame.mixer.Sound('bangSmall.wav')
+bang_small = pygame.mixer.Sound('bangSmall.wav')
 beep = pygame.mixer.Sound('beep (1).wav')
 bullet_hit = pygame.mixer.Sound('extraShip.wav')
 
@@ -38,7 +38,7 @@ pygame.display.set_caption("Super Pong")
 left_score = 0
 right_score = 0
 
-# Yellow (score) powerup sizes/location/stats
+# Yellow (score) powerup sizes/location
 yellow_powerup_size = random.randint(25,50)
 yellow_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
 yellow_powerup_y = random.randint(0, SCREEN_HEIGHT - yellow_powerup_size)
@@ -48,6 +48,10 @@ grey_wall_x = ((SCREEN_WIDTH / 2) - 12.5)
 grey_wall_y = ((SCREEN_HEIGHT / 2) - 12.5)
 grey_wall_velocity = 3
 
+# Brown speed powerup sizes/location
+brown_speed_powerup_size = random.randint(40,60)
+brown_speed_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
+brown_speed_powerup_y = random.randint(0, SCREEN_HEIGHT - brown_speed_powerup_size)
 
 #Paddle Sizes
 paddle_left_location_x = 40
@@ -149,7 +153,7 @@ while running:
         paddle_right_location_y = min(paddle_right_location_y, SCREEN_HEIGHT - paddle_radius) # player does not move past bottom edge
 
     #Left Shooting movement
-    if (keys[pygame.K_d]) and (left_bullet_motion == False) and (bullet_count_left <= 15):
+    if (keys[pygame.K_d]) and (left_bullet_motion == False) and (bullet_count_left <= 150):
         left_bullet = pygame.Rect(paddle_left_location_x + paddle_radius, paddle_left_location_y , bullet_length, bullet_width)
         bullet_count_left += 1
         left_bullet_motion = True
@@ -162,8 +166,8 @@ while running:
             left_bullet_motion = False
 
 
-    #Right Shooting movement
-    if (keys[pygame.K_LEFT]) and (right_bullet_motion == False) and (bullet_count_right <= 15):
+    #Right Shooting movement 
+    if (keys[pygame.K_LEFT]) and (right_bullet_motion == False) and (bullet_count_right <= 150):
         right_bullet = pygame.Rect(paddle_right_location_x - bullet_length + paddle_radius, paddle_right_location_y, bullet_length, bullet_width)
         bullet_count_right += 1
         right_bullet_motion = True
@@ -226,7 +230,7 @@ while running:
         yellow_powerup_y = random.randint(0, SCREEN_HEIGHT - yellow_powerup_size)
 
     #Right bullet collision with yellow powerup
-    if right_bullet.colliderect(yellow_powerup): #Length formula math.sqrt((x-x)^2 + (y-y)^2)
+    if right_bullet.colliderect(yellow_powerup): 
         right_random_yellow_powerup = random.randint(0,8)
         right_bullet = pygame.Rect(0,0,1000,-1000)
 
@@ -292,6 +296,51 @@ while running:
             left_score -= 3
 
 
+    #Brown speed powerup creation
+    pygame.draw.rect(screen, BROWN, (brown_speed_powerup_x , brown_speed_powerup_y, brown_speed_powerup_size, brown_speed_powerup_size))
+
+    #Rectangle around Brown speed powerup
+    brown_powerdown = pygame.Rect(brown_speed_powerup_x , brown_speed_powerup_y, brown_speed_powerup_size, brown_speed_powerup_size)
+
+    if (brown_speed_powerup_x == yellow_powerup_x) and (brown_speed_powerup_y == yellow_powerup_y):
+            brown_speed_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
+            brown_speed_powerup_y = random.randint(0, SCREEN_HEIGHT - brown_speed_powerup_size)
+
+    #Left bullet collision with Brown powerdown
+    if left_bullet.colliderect(brown_powerdown): 
+        left_random_brown_powerdown = random.randint(0,2)
+        left_bullet = pygame.Rect(0,0,10000,-10000000)
+
+        if left_random_brown_powerdown == 1:
+            ball_speed_x += 1.2
+            ball_speed_y += 1.2
+        
+        elif left_random_brown_powerdown == 2:
+            ball_speed_x -= 1.2
+            ball_speed_y -= 1.2
+        
+        brown_speed_powerup_size = random.randint(40,60)
+        brown_speed_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
+        brown_speed_powerup_y = random.randint(0, SCREEN_HEIGHT - brown_speed_powerup_size)
+    
+    #Right bullet collision with Brown powerdown
+    if right_bullet.colliderect(brown_powerdown): 
+        right_random_brown_powerdown = random.randint(0,2)
+        right_bullet = pygame.Rect(0,0,10000,-10000000)
+
+        if right_random_brown_powerdown == 1:
+            ball_speed_x += 1.2
+            ball_speed_y += 1.2
+        
+        elif right_random_brown_powerdown == 2:
+            ball_speed_x -= 1.2
+            ball_speed_y -= 1.2
+        
+        brown_speed_powerup_size = random.randint(40,60)
+        brown_speed_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
+        brown_speed_powerup_y = random.randint(0, SCREEN_HEIGHT - brown_speed_powerup_size)
+
+
     #Scoring
     if ball_x >= SCREEN_WIDTH - ball_radius/4:
         left_score += 1 
@@ -301,7 +350,7 @@ while running:
 
     #Scoring Display
 
-    text = font.render(f"{left_score} - {right_score}", True, BLACK)
+    text = font.render(f"{left_score} / {right_score}", True, BLACK)
     center_text = (SCREEN_HEIGHT // 1.6, SCREEN_WIDTH // 20)
     screen.blit(text, (center_text))
 
@@ -323,9 +372,3 @@ while running:
 
 pygame.quit()
 sys.exit()
-
-
-
-
-
-
