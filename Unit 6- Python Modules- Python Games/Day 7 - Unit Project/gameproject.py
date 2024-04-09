@@ -207,6 +207,10 @@ while running:
     #Rectangle around yellow (score) powerup
     yellow_powerup = pygame.Rect(yellow_powerup_x, yellow_powerup_y, yellow_powerup_size, yellow_powerup_size)
 
+    #yellow powerup colliding with ball
+    if ball.colliderect(yellow_powerup):
+        ball_speed_x *= -1
+
     #left bullet collision with yellow powerup
     if left_bullet.colliderect(yellow_powerup): 
         left_random_yellow_powerup = random.randint(0,4)
@@ -305,6 +309,10 @@ while running:
     if (brown_speed_powerup_x == yellow_powerup_x) and (brown_speed_powerup_y == yellow_powerup_y):
             brown_speed_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
             brown_speed_powerup_y = random.randint(0, SCREEN_HEIGHT - brown_speed_powerup_size)
+
+    #ball colliding with Brown powerup
+    if ball.colliderect(brown_powerdown):
+        ball_speed_x *= -1
 
     #Left bullet collision with Brown powerdown
     if left_bullet.colliderect(brown_powerdown): 
