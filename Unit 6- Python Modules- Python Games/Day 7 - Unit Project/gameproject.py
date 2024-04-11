@@ -228,6 +228,9 @@ while running:
         elif left_random_yellow_powerup == 4:
             left_score += 3
         
+        elif left_random_yellow_powerup == 0:
+            left_score += 1
+        
 
         yellow_powerup_size = random.randint(25,50)
         yellow_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
@@ -250,6 +253,8 @@ while running:
         elif right_random_yellow_powerup == 4:
             right_score += 3
 
+        elif right_random_yellow_powerup == 0:
+            right_score += 1
 
         yellow_powerup_size = random.randint(25,50)
         yellow_powerup_x = random.randint(200, SCREEN_WIDTH - 200)
